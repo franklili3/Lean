@@ -28,6 +28,15 @@ import numpy as np
 ### <meta name="tag" content="using data" />
 ### <meta name="tag" content="using quantconnect" />
 ### <meta name="tag" content="trading and orders" />
+'''import ptvsd
+ptvsd.enable_attach()
+print(f''Python Tool for Visual Studio Debugger {ptvsd.__version__}
+Please attach the python debugger:
+- In Visual Studio, select Debug > Attach to Process (or press Ctrl+Alt+P) to open the Attach to Process dialog box.
+- For Connection type, select Python remote (ptvsd)
+- In the Connection target box, select tcp://localhost:5678/ and click 'Attach' button'')
+ptvsd.wait_for_attach()
+'''
 class BasicTemplateAlgorithm(QCAlgorithm):
     '''Basic template algorithm simply initializes the date range and cash'''
 
@@ -47,5 +56,7 @@ class BasicTemplateAlgorithm(QCAlgorithm):
         Arguments:
             data: Slice object keyed by symbol containing the stock data
         '''
+        #ptvsd.break_into_debugger()
+
         if not self.Portfolio.Invested:
             self.SetHoldings("SPY", 1)
