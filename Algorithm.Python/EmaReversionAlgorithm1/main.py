@@ -124,7 +124,7 @@ class SymbolData:
         self.PositiveAabnormalIsOverDiffPctCloseEmaSlow = False
         self.DiffPctCloseEmaSlowIsOverNegativeAbnormal = False
                
-class QuantumHorizontalInterceptor(QCAlgorithm):
+class EmaReversionAlgorithm(QCAlgorithm):
 
     def Initialize(self):
         self.SetStartDate(2019, 3, 27)  # Set Start Date

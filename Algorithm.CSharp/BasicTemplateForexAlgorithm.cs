@@ -33,20 +33,21 @@ namespace QuantConnect.Algorithm.CSharp
         /// </summary>
         public override void Initialize()
         {
-            SetStartDate(2014, 5, 7);  //Set Start Date
-            SetEndDate(2014, 5, 15);    //Set End Date
+            SetStartDate(2019, 5, 1);  //Set Start Date
+            SetEndDate(2019, 6, 4);    //Set End Date
             SetCash(100000);             //Set Strategy Cash
             // Find more symbols here: http://quantconnect.com/data
             AddForex("EURUSD");
-            AddForex("NZDUSD");
+/* AddForex("NZDUSD");
 
-            var dailyHistory = History(5, Resolution.Daily);
-            var hourHistory = History(5, Resolution.Hour);
+ var dailyHistory = History(5, Resolution.Daily);
+ var hourHistory = History(5, Resolution.Hour);
+            
+ var secondHistory = History(5, Resolution.Second);
+*/
             var minuteHistory = History(5, Resolution.Minute);
-            var secondHistory = History(5, Resolution.Second);
-
             // Log values from history request of second-resolution data
-            foreach (var data in secondHistory)
+            foreach (var data in minuteHistory)
             {
                 foreach (var key in data.Keys)
                 {
@@ -64,7 +65,8 @@ namespace QuantConnect.Algorithm.CSharp
             if (!Portfolio.Invested)
             {
                 SetHoldings("EURUSD", .5);
-                SetHoldings("NZDUSD", .5);
+/* SetHoldings("NZDUSD", .5);
+ */
                 Log(string.Join(", ", data.Values));
             }
         }
