@@ -55,7 +55,8 @@
     <Content Include="Alphas\VIXDualThrustAlpha.py" />
     <Content Include="BasicCSharpIntegrationTemplateAlgorithm.py" />
     <Content Include="BasicSetAccountCurrencyAlgorithm.py" />
-    <Content Include="EmaReversionAlgorithm1\main.py" />
+    <Content Include="EmaReversionAlgorithm1\EmaReversionFull.py" />
+    <Content Include="EmaReversionSimple.py" />
     <Content Include="USEnergyInformationAdministrationAlgorithm.py" />
     <None Include="RawPricesUniverseRegressionAlgorithm.py" />
     <None Include="CapmAlphaRankingFrameworkAlgorithm.py" />
