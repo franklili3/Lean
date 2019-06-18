@@ -13,7 +13,7 @@ from QuantConnect.Algorithm import *
 
 import statistics
 from QuantConnect.Algorithm.Framework.Risk import *
-from QuantConnect.Algorithm.Framework.Execution import ImmediateExecutionModel
+from QuantConnect.Algorithm.Framework.Execution import VolumeWeightedAveragePriceExecutionModel
 #from QuantConnect.Algorithm.Framework.Execution import VolumeWeightedAveragePriceExecutionModel
 from QuantConnect.Algorithm.Framework.Alphas import *
 from QuantConnect.Algorithm.Framework.Portfolio import EqualWeightingPortfolioConstructionModel
@@ -21,18 +21,18 @@ from QuantConnect.Algorithm.Framework.Portfolio import EqualWeightingPortfolioCo
 from datetime import timedelta, datetime
 
 #ptvsd.enable_attach()
-print(f'''Python Tool for Visual Studio Debugger {ptvsd.__version__}
-Please attach the python debugger:
-- In Visual Studio, select Debug > Attach to Process (or press Ctrl+Alt+P) to open the Attach to Process dialog box.
-- For Connection type, select Python remote (ptvsd)
-- In the Connection target box, select tcp://localhost:5678/ and click "Attach" button''')
+#print(f'''Python Tool for Visual Studio Debugger {ptvsd.__version__}
+#Please attach the python debugger:
+#- In Visual Studio, select Debug > Attach to Process (or press Ctrl+Alt+P) to open the Attach to Process dialog box.
+#- For Connection type, select Python remote (ptvsd)
+#- In the Connection target box, select tcp://localhost:5678/ and click "Attach" button''')
 #ptvsd.wait_for_attach()
 
 class EmaReversionAlgorithm(QCAlgorithm):
 
     def Initialize(self):
-        self.SetStartDate(2018, 12, 1)  # Set Start Date
-        self.SetEndDate(2019, 6, 1)  # Set End Date
+        self.SetStartDate(2019, 5, 1)  # Set Start Date
+        self.SetEndDate(2019, 5, 2)  # Set End Date
         self.SetCash(100000)  # Set Strategy Cash
         #self.AddEquity("SPY")
         self.symbol = "BTCUSD"
@@ -50,11 +50,11 @@ class EmaReversionAlgorithm(QCAlgorithm):
         deviation = Chart("Deviation Degree")
         deviation.AddSeries(Series("Deviation Degree", SeriesType.Line, 0))
         self.AddChart(deviation)
-        self.resamplePeriod = (self.EndDate - self.StartDate) / 4000
+        self.resamplePeriod = (self.EndDate - self.StartDate) / 3000
         self.AddAlpha(EmaReversionAlphaModel(self.symbol, self.span, self.ema, self.resamplePeriod))
         self.SetPortfolioConstruction(EqualWeightingPortfolioConstructionModel())
         self.SetRiskManagement(MaximumDrawdownPercentPortfolio(0.1))
-        self.SetExecution(ImmediateExecutionModel())
+        self.SetExecution(VolumeWeightedAveragePriceExecutionModel())
         
             
 class EmaReversionAlphaModel(AlphaModel):
@@ -91,8 +91,8 @@ class EmaReversionAlphaModel(AlphaModel):
         if longPeriod_index == longPeriod:
             diff_pct_close_ema_mean = diff_pct_close_ema_sum / longPeriod_index
             diff_pct_close_ema_std = statistics.stdev(diff_pct_close_ema_list)
-            negative_abnormal = diff_pct_close_ema_mean - 3 * diff_pct_close_ema_std
-            positive_abnormal = diff_pct_close_ema_mean + 3 * diff_pct_close_ema_std
+            negative_abnormal = diff_pct_close_ema_mean - 1.96 * diff_pct_close_ema_std
+            positive_abnormal = diff_pct_close_ema_mean + 1.96 * diff_pct_close_ema_std
             longPeriod_index = 0
             diff_pct_close_ema_sum = 0
             diff_pct_close_ema_list = []
